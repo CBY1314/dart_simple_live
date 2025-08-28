@@ -7,6 +7,7 @@ on:
   push:
     tags:
       - "v*"  # 仅 v 开头的 tag 触发
+  workflow_dispatch:  # 支持手动触发
 
 jobs:
   build:
@@ -54,13 +55,13 @@ jobs:
       contents: write
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v4  # 同步升级到 v4
+        uses: actions/download-artifact@v4
         with:
           path: artifacts
-          merge-multiple: true  # 关键修复：合并文件
+          merge-multiple: true
 
       - name: Verify Files
-        run: ls -R artifacts  # 调试用
+        run: ls -R artifacts
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -75,3 +76,4 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
